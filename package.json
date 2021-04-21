@@ -6,9 +6,12 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
+    "chart.js": "^2.9.3",
+    "graphql-react": "^13.0.0",
+    "react": "^16.14.0",
+    "react-chartjs-2": "^2.9.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "^3.4.3",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
