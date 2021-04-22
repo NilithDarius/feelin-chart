@@ -1,0 +1,39 @@
+.jupiler-container {
+    margin: 10px;
+}
+.charts-wrapper {
+    padding: 20px;
+    margin: 20px 0px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 0px 12px 1px #b3aaaa;
+}
+.charts-title {
+    font-size: 25px;
+    display: block;
+    margin: 10px 0px;
+}
+.charts-emotion-wrapper {
+    padding: 10px 0px;
+}
+.charts-emotion-wrapper > .form-group {
+    padding: 0px 0px 30px 0px;
+    display: flex;
+    
+}
+.rounded-select-button {
+    position: relative;
+}
+.rounded-select-button > select {
+    padding: 20px 100px 10px 10px;
+    border-radius: 6px;
+    color: #8e8e8e;
+    border-color: #8e8e8e;
+}
+.append-title {
+    position: absolute;
+    border-radius: 6px;
+    top: 0px;
+    left: 0px;
+    padding: 10px 0px 0px 10px;
+}
