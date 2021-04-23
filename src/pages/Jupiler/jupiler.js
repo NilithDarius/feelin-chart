@@ -6,8 +6,10 @@ import "../../styles/charts.css";
 
 function Jupiler() {
   const [emotionData, setEmotionData] = useState(0);
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const fetchEmotion = useCallback(async () => {
+    setIsLoading(true);
     const data = await axios.post(process.env.REACT_APP_API_URL, {
       query: loginQuery,
     });
@@ -31,21 +33,27 @@ function Jupiler() {
       emotionData.data.data.clientProfile.orders.filter(
         (order) => order.orderName === "Wave_test"
       )[0];
+    setIsLoading(false);
     setEmotionData(trialEmotionData);
   }, []);
-  
+
   useEffect(() => {
     fetchEmotion();
   }, [fetchEmotion]);
 
   return (
     <div>
-      <div className="charts-wrapper">
-        <EmotionChart result={emotionData} />
-      </div>
-      <div className="charts-wrapper">
-        <AttentionChart />
-      </div>
+      {isLoading && "Loading..."}
+      {!isLoading && (
+        <React.Fragment>
+          <div className="charts-wrapper">
+            <EmotionChart result={emotionData} />
+          </div>
+          <div className="charts-wrapper">
+            <AttentionChart />
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 }
