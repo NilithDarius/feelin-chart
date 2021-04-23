@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import Thumbnails from "./thumbnails";
 function EmotionChart({ result }) {
   const [selectedImage, setSelectedImage] = useState('');
+
   const calcData = (data) => {
     let sum = 0;
     return data.reduce((cur, val, index) => {
@@ -14,6 +15,7 @@ function EmotionChart({ result }) {
       return cur;
     }, []);
   };
+
   const labelData = useMemo(() => {
     if (result) {
       var i = 0;

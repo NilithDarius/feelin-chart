@@ -6,6 +6,7 @@ const Thumbnails = ({index}) => {
       <div className="thumnail-container">
         {IMAGE_URLs.map((url, idx) => (
           <div
+            key={idx}
             className={`image-thumbnail ${idx === index ? 'active' : ''}`}
             style={{
               backgroundImage: `url(https://picsum.photos/200/200/?blur&random=${idx})`,
