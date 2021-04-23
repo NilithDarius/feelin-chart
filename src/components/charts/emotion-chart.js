@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { emotionType } from "../../services/constants";
+import React, { useState, useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import Thumbnails from "./thumbnails";
 function EmotionChart({ result }) {
