@@ -1,91 +1,118 @@
-import React from 'react'
-import { Line } from 'react-chartjs-2'
+import React, { useEffect, useState } from "react";
+import { Line, Bar, HorizontalBar } from "react-chartjs-2";
+import Thumbnails from "./thumbnails";
 function AttentionChart() {
+  const [selectedImage, setSelectedImage] = useState('');
   const data = {
-    labels: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+    labels: [1, 2, 3, 4, 5],
     datasets: [
       {
-        label: "First dataset",
-        data: [33, 53, 85, 41, 44, 65],
-        fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
+        label: "VALUE 1",
+        data: [
+          [10, 13],
+          [77, 80],
+          [50, 53],
+          [24, 27],
+          [59, 62],
+        ],
+        // stack: 1,
+        backgroundColor: "#9C4C8F",
+        categoryPercentage: 1,
+        pointRadius: 7,
       },
       {
-        label: "Second dataset",
-        data: [33, 25, 35, 51, 54, 76],
-        fill: false,  
-        borderColor: "#742774"
-      }
-    ]
+        label: "VALUE 2",
+        data: [
+          [30, 33],
+          [23, 26],
+          [78, 81],
+          [90, 93],
+          [20, 23],
+        ],
+        // stack: 1,
+        backgroundColor: "#ED891D",
+        categoryPercentage: 1,
+        pointRadius: 7,
+      },
+    ],
   };
-
-  const legend = {
-    display: false,
-    position: "bottom",
-    labels: {
-      fontColor: "#323130",
-      fontSize: 14
-    }
-  };
-
   const options = {
+    indexAxis: "x",
+    responsive: true,
+    legend: {
+      position: "top",
+      align: "end",
+      labels: {
+        fontColor: "#323130",
+        fontSize: 14,
+        boxWidth: 20,
+        boxheight: 20,
+        usePointStyle: 7,
+      },
+    },
     title: {
       display: false,
-      text: "Chart Title"
+    },
+    onHover: function(evt, element, index) {
+      evt.target.style.cursor = element[0] ? 'pointer' : 'default'
+      setSelectedImage(element[0] ? element[0]._index : '')
     },
     scales: {
       yAxes: [
         {
+          id: "y-axis-0",
           gridLines: {
             display: true,
-            borderDash: [8, 4]
+            borderDash: [5, 4],
+            color: "#A9B0C3",
+            zeroLineColor: "#A9B0C3",
+            lineWidth: 2,
           },
+          stacked: false,
           ticks: {
+            beginAtZero: true,
             suggestedMin: 0,
             suggestedMax: 100,
             major: {
-              enabled: false 
+              enabled: false,
             },
             stepSize: 20,
-            callback: function(value, index, values) {
-              return value !== 0 ? value + '%' : '';
-            }
-          }
-        }
+            callback: function (value, index, values) {
+              return value !== 0 ? value + "%" : "";
+            },
+          },
+        },
       ],
       xAxes: [
         {
           gridLines: {
-            display: false,
+            display: true,
+            color: "#A9B0C3",
+            lineWidth: 2,
+            zeroLineColor: "#A9B0C3",
           },
+          stacked: true,
           ticks: {
-            callback: function(value, index, values) {
-              return value !== 0 ? value + "''" : value;
-            }
-          }
-        }        
-      ]
-    }
+            beginAtZero: true,
+            min: 0,
+            suggestedMin: 0,
+            suggestedMax: 60,
+            callback: function (value, index, values) {
+              return value !== 0 ? value + "''" : 0;
+            },
+          },
+        },
+      ],
+    },
   };
   return (
     <div>
-      <label className="charts-title">
-        Attention level on time
-      </label>
+      <label className="charts-title">Attention level on time</label>
       <div className="charts-emotion-wrapper">
-        <div className="form-group">
-          <div className="rounded-select-button">
-            <select>
-              <option>22~23</option>
-              <option>22~23</option>
-              <option>22~23</option>
-            </select>
-          </div>
-        </div>
-        <Line data={data} legend={legend} options={options} height={50}/>
+        <Bar data={data} options={options} height={50} />
       </div>
+      <Thumbnails index={selectedImage}/>
     </div>
-  )
+  );
 }
-export default AttentionChart
+export default AttentionChart;

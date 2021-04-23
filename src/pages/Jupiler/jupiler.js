@@ -16,7 +16,6 @@ function Jupiler() {
       query: loginQuery,
     });
     const { token } = data.data.data.login;
-    console.log(token, "this is token");
     const emotionData = await axios.post(
       process.env.REACT_APP_API_URL,
       {
@@ -29,12 +28,19 @@ function Jupiler() {
         },
       }
     );
-    console.log(emotionData);
+    const trialEmotionData =
+      emotionData.data.data.clientProfile.orders.filter(
+        (order) => order.orderName === "Wave_test"
+      ).length > 0 &&
+      emotionData.data.data.clientProfile.orders.filter(
+        (order) => order.orderName === "Wave_test"
+      )[0];
+      setEmotionData(trialEmotionData);
   }, []);
   return (
     <div>
       <div className="charts-wrapper">
-        <EmotionChart />
+        <EmotionChart result={emotionData}/>
       </div>
       <div className="charts-wrapper">
         <AttentionChart />

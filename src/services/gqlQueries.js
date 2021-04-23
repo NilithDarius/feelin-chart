@@ -7,6 +7,7 @@ export const loginQuery = `mutation {
 export const emotionQuery = `query {
   clientProfile {
     orders {
+      orderName,
       analytics {
         emotion {
           details {
