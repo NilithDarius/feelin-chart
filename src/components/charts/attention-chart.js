@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Line, Bar, HorizontalBar } from "react-chartjs-2";
+import React, { useState } from "react";
+import { Bar } from "react-chartjs-2";
 import Thumbnails from "./thumbnails";
 function AttentionChart() {
   const [selectedImage, setSelectedImage] = useState('');
@@ -15,7 +15,6 @@ function AttentionChart() {
           [24, 27],
           [59, 62],
         ],
-        // stack: 1,
         backgroundColor: "#9C4C8F",
         categoryPercentage: 1,
         pointRadius: 7,
@@ -29,7 +28,6 @@ function AttentionChart() {
           [90, 93],
           [20, 23],
         ],
-        // stack: 1,
         backgroundColor: "#ED891D",
         categoryPercentage: 1,
         pointRadius: 7,
