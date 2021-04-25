@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { AttentionChart, EmotionChart } from "../../components";
+import { AttentionChart, EmotionChart,Test } from "../../components";
 import { loginQuery, emotionQuery } from "../../services/gqlQueries";
 import "../../styles/charts.css";
 
@@ -38,22 +38,25 @@ function Jupiler() {
   }, []);
 
   useEffect(() => {
-    fetchEmotion();
+    // fetchEmotion();
   }, [fetchEmotion]);
 
   return (
     <div>
-      {isLoading && "Loading..."}
-      {!isLoading && (
+      {/* {isLoading && "Loading..."} */}
+      {/* {!isLoading && ( */}
         <React.Fragment>
+          
           <div className="charts-wrapper">
-            <EmotionChart result={emotionData} />
+            {/* <EmotionChart result={emotionData} /> */}
+            <Test />
           </div>
           <div className="charts-wrapper">
             <AttentionChart />
           </div>
+          
         </React.Fragment>
-      )}
+      {/* )} */}
     </div>
   );
 }

@@ -37,5 +37,17 @@ export const IMAGE_URLs = [
     'https://feelin-api-gw.herokuapp.com/media/download/602fd9b3afd33f002310d55a',
     'https://feelin-api-gw.herokuapp.com/media/download/602fd9bcafd33f002310d56e',
     'https://feelin-api-gw.herokuapp.com/media/download/602fd9c1afd33f002310d57e',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9c5afd33f002310d58a',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9b3afd33f002310d55a',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9bcafd33f002310d56e',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9c1afd33f002310d57e',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9c5afd33f002310d58a',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9b3afd33f002310d55a',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9bcafd33f002310d56e',
+    'https://feelin-api-gw.herokuapp.com/media/download/602fd9c1afd33f002310d57e',
     'https://feelin-api-gw.herokuapp.com/media/download/602fd9c5afd33f002310d58a'
 ]
+
+export const max_count = 20;
+
+export const default_ratio = 9/16;
