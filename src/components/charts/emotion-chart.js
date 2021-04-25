@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Line } from "react-chartjs-2";
+import Chart from "chart.js";
 import Thumbnails from "./thumbnails";
 function EmotionChart({ result }) {
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
 
+  useEffect(() => {}, []);
   const calcData = (data) => {
     let sum = 0;
     return data.reduce((cur, val, index) => {
@@ -23,7 +25,7 @@ function EmotionChart({ result }) {
       for (i = 0; i <= 215; i += 5) {
         tempData[i / 5] = i;
       }
-      tempData[i / 5] = 216;
+      tempData[i / 5 - 1] = 216;
       return tempData;
     }
   }, [result]);
@@ -71,66 +73,66 @@ function EmotionChart({ result }) {
   }, [result]);
 
   const data = {
-    labels: labelData,
+    labels: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
     datasets: [
-      {
-        label: "Sadness",
-        data: sadnessData,
-        borderColor: "#ED891D ",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "#ED891D",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "#ED891D",
-      },
-      {
-        label: "Fear",
-        data: fearData,
-        borderColor: "#31ce43",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "#31ce43",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "#31ce43",
-      },
-      {
-        label: "Happy",
-        data: happyData,
-        borderColor: "pink",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "pink",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "pink",
-      },
-      {
-        label: "Surprise",
-        data: surpriseData,
-        borderColor: "green",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "green",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "green",
-      },
-      {
-        label: "Anger",
-        data: angerData,
-        borderColor: "blue",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "blue",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "blue",
-      },
+      // {
+      //   label: "Sadness",
+      //   data: sadnessData,
+      //   borderColor: "#ED891D",
+      //   borderWidth: 2,
+      //   fill: false,
+      //   pointBackgroundColor: "#ED891D",
+      //   pointRadius: 7,
+      //   pointHoverRadius: 7,
+      //   backgroundColor: "#ED891D",
+      // },
+      // {
+      //   label: "Fear",
+      //   data: fearData,
+      //   borderColor: "#31ce43",
+      //   borderWidth: 2,
+      //   fill: false,
+      //   pointBackgroundColor: "#31ce43",
+      //   pointRadius: 7,
+      //   pointHoverRadius: 7,
+      //   backgroundColor: "#31ce43",
+      // },
+      // {
+      //   label: "Happy",
+      //   data: happyData,
+      //   borderColor: "pink",
+      //   borderWidth: 2,
+      //   fill: false,
+      //   pointBackgroundColor: "pink",
+      //   pointRadius: 7,
+      //   pointHoverRadius: 7,
+      //   backgroundColor: "pink",
+      // },
+      // {
+      //   label: "Surprise",
+      //   data: surpriseData,
+      //   borderColor: "green",
+      //   borderWidth: 2,
+      //   fill: false,
+      //   pointBackgroundColor: "green",
+      //   pointRadius: 7,
+      //   pointHoverRadius: 7,
+      //   backgroundColor: "green",
+      // },
+      // {
+      //   label: "Anger",
+      //   data: angerData,
+      //   borderColor: "blue",
+      //   borderWidth: 2,
+      //   fill: false,
+      //   pointBackgroundColor: "blue",
+      //   pointRadius: 7,
+      //   pointHoverRadius: 7,
+      //   backgroundColor: "blue",
+      // }, 
       {
         label: "Disgust",
-        data: disgustData,
+        data: [50, 90, 20, 40, 70, 10, 80, 90, 30, 66, 92, 15, 79, 48, 82],
         borderColor: "red",
         borderWidth: 2,
         fill: false,
@@ -138,8 +140,8 @@ function EmotionChart({ result }) {
         pointRadius: 7,
         pointHoverRadius: 7,
         backgroundColor: "red",
-      }
-    ]
+      },
+    ],
   };
 
   const legend = {
@@ -156,13 +158,15 @@ function EmotionChart({ result }) {
   };
 
   const options = {
+    maintainAspectRatio: false,
     title: {
       display: false,
       text: "Chart Title",
     },
-    onHover: function(evt, element) {
-      evt.target.style.cursor = element[0] ? 'pointer' : 'default'
-      setSelectedImage(element[0] ? element[0]._index : '')
+    tooltips: {
+      titleFontSize: 15,
+      titleMarginBottom: 10,
+      bodyFontSize: 10,
     },
     scales: {
       yAxes: [
@@ -170,9 +174,9 @@ function EmotionChart({ result }) {
           gridLines: {
             display: true,
             borderDash: [6, 4],
-            color: '#A9B0C3',
-            lineWidth:  2,
-            zeroLineColor: '#A9B0C3'
+            color: "#A9B0C3",
+            lineWidth: 2,
+            zeroLineColor: "#A9B0C3",
           },
           ticks: {
             suggestedMin: 0,
@@ -191,9 +195,9 @@ function EmotionChart({ result }) {
         {
           gridLines: {
             display: false,
-            color: '#A9B0C3',
-            lineWidth:  2,
-            zeroLineColor: '#A9B0C3'
+            color: "#A9B0C3",
+            lineWidth: 2,
+            zeroLineColor: "#A9B0C3",
           },
           ticks: {
             callback: function (value, index, values) {
@@ -203,60 +207,27 @@ function EmotionChart({ result }) {
         },
       ],
     },
+    onHover: function (evt, element) {
+      evt.target.style.cursor = element[0] ? "pointer" : "default";
+      setSelectedImage(element[0] ? element[0]._index - 1 : "");
+    },
+    animation: {
+      onComplete: function (canvas) {},
+    },
   };
   return (
     <div>
       <label className="charts-title">Emotion level over time</label>
       <div className="charts-emotion-wrapper">
-        {/* <div className="form-group">
-          <div className="rounded-select-button">
-            <select>
-              <option>22~23</option>
-              <option>22~23</option>
-              <option>22~23</option>
-            </select>
-          </div>
-          <div className="rounded-select-button">
-            <select>
-              <option>All</option>
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-          <div className="rounded-select-button">
-            <select value={0}>
-              {emotionType.map((emotion) => (
-                <option value={emotion.value}>{emotion.title}</option>
-              ))}
-            </select>
-          </div>
-          <div className="title-status">
-            <div className="amount">
-              <span>154 personals displayed</span>
-            </div>
-            <div>
-              <div className="append-circle">
-                <span></span>
-                FEAR{" "}
-              </div>
-            </div>
-            <div>
-              <div className="append-circle">
-                <span></span>
-                Sadness{" "}
-              </div>
-            </div>
-            <div>
-              <div className="append-circle">
-                <span></span>
-                Happiness{" "}
-              </div>
-            </div>
-          </div>
-        </div> */}
-        <Line data={data} legend={legend} options={options} height={50} />
+        <Line
+          id="emotion-chart"
+          data={data}
+          legend={legend}
+          options={options}
+          height={300}
+        />
       </div>
-      <Thumbnails index={selectedImage}/>
+      <Thumbnails index={selectedImage} />
     </div>
   );
 }
