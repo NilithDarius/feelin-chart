@@ -1,5 +1,5 @@
-export const MAX_COUNT = 50;
-export const ITEMS_PER_SCREEN = 30;
+export const MAX_COUNT = 30;
+export const ITEMS_PER_SCREEN = 15;
 export const DEFAULT_RATIO = 9 / 16;
 export const IMAGE_URLS = [
   "https://feelin-api-gw.herokuapp.com/media/download/602fd9b3afd33f002310d55a",
