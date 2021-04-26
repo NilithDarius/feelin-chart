@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import Thumbnails from "./thumbnails";
 function AttentionChart() {
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
   const data = {
     labels: [1, 2, 3, 4, 5],
     datasets: [
@@ -41,7 +41,7 @@ function AttentionChart() {
     tooltips: {
       titleFontSize: 15,
       titleMarginBottom: 10,
-      bodyFontSize: 10
+      bodyFontSize: 10,
     },
     legend: {
       position: "top",
@@ -57,9 +57,9 @@ function AttentionChart() {
     title: {
       display: false,
     },
-    onHover: function(evt, element, index) {
-      evt.target.style.cursor = element[0] ? 'pointer' : 'default'
-      setSelectedImage(element[0] ? element[0]._index : '')
+    onHover: function (evt, element, index) {
+      evt.target.style.cursor = element[0] ? "pointer" : "default";
+      setSelectedImage(element[0] ? element[0]._index : "");
     },
     scales: {
       yAxes: [
@@ -113,9 +113,9 @@ function AttentionChart() {
     <div>
       <label className="charts-title">Attention level on time</label>
       <div className="charts-emotion-wrapper">
-        <Bar id='attention-chart' data={data} options={options} height={300} />
+        <Bar id="attention-chart" data={data} options={options} height={300} />
       </div>
-      <Thumbnails index={selectedImage}/>
+      <Thumbnails index={selectedImage} />
     </div>
   );
 }
