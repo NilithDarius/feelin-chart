@@ -1,44 +1,39 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
-import { IMAGE_URLs, default_ratio } from "../../services/constants";
+import { DEFAULT_RATIO, MAX_COUNT } from "../../utils/constants";
+
 const Thumbnails = ({ index, eleWidth, type }) => {
-  const [containerWidth, setContainerWidth] = useState("");
+  const [containerWidth, setContainerWidth] = useState(null);
+  const generateArray = () => {
+    const data = [];
+    for (let i = 0; i < MAX_COUNT; i++) data[i] = i;
+    return data;
+  };
   useEffect(() => {
     setContainerWidth(
       document.getElementById(`${type}ChartAreaWrapper`).clientWidth
     );
-    console.log(
-      document.getElementById(`${type}ChartAreaWrapper`).style.width,
-      `this is ${type} width`,
-      document.getElementById(`${type}ChartAreaWrapper`).clientWidth
-    );
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eleWidth]);
+
   return (
     <div
       className="thumbnailContainer"
       id="thumbnailContainer"
-      style={{ width: containerWidth, height: eleWidth * default_ratio * 1.5 }}
+      style={{ width: containerWidth, height: eleWidth * DEFAULT_RATIO * 1.5 }}
     >
-      {IMAGE_URLs.map((imageURL, idx) => (
+      {generateArray().map((item, idx) => (
         <div
           className={classNames({ active: index === idx })}
-
           style={{
             width: idx === index ? eleWidth * 1.5 : eleWidth,
             height:
               idx === index
-                ? eleWidth * 1.5 * default_ratio
-                : eleWidth * default_ratio,
+                ? eleWidth * 1.5 * DEFAULT_RATIO
+                : eleWidth * DEFAULT_RATIO,
             backgroundImage: `url(https://picsum.photos/200/200/?blur&random=${idx})`,
           }}
-        ></div>
-        // <div
-        //   style={{
-        //     height: "100px",
-        //     width: "300px",
-        //     backgroundColor: "rebeccapurple",
-        //   }}
-        // ></div>
+        />
       ))}
     </div>
   );

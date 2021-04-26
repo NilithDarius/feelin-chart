@@ -1,36 +1,52 @@
 import React, { useEffect, useState } from "react";
 import Chart from "chart.js";
-import { max_count } from "../../services/constants";
 import Thumbnails from "../charts/thumbnails";
+import { Select } from "../charts/select";
+import {
+  MAX_COUNT,
+  ITEMS_PER_SCREEN,
+  DEFAULT_FORM_DATA,
+  EMOTION_TYPE,
+} from "../../utils/constants";
+
 const Test = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [eleWidth, setEleWidth] = useState("");
+
   const addData = (numData, chart) => {
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < numData; i++) {
       chart.data.datasets[0].data.push(Math.random() * 100);
       chart.data.datasets[1].data.push(Math.random() * 100);
       chart.data.labels.push(i * 5 + 20);
-      var newwidth =
+      const newwidth =
         document.getElementById("emotionChartAreaWrapper").offsetWidth +
-        document.getElementById("emotionChartWrapper").clientWidth / 10;
+        document.getElementById("emotionChartWrapper").clientWidth /
+          ITEMS_PER_SCREEN;
       document.getElementById(
         "emotionChartAreaWrapper"
       ).style.width = `${newwidth}px`;
     }
   };
-  const generateData = () => {
-    var label = [];
-    for (var i = 0; i < 10; i++) {
+  const generateLabel = () => {
+    const label = [];
+    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
       label[i] = i * 5;
     }
     return label;
   };
-  var chartData = {
-    labels: generateData(),
+  const generateData = () => {
+    const data = [];
+    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
+      data[i] = Math.random() * 100;
+    }
+    return data;
+  };
+  const chartData = {
+    labels: generateLabel(),
     datasets: [
       {
         label: "Test Data Set1",
-        data: [50, 90, 20, 40, 70, 80, 35, 84, 28, 47],
+        data: generateData(),
         borderColor: "#9C4C8F",
         borderWidth: 2,
         fill: false,
@@ -41,7 +57,7 @@ const Test = () => {
       },
       {
         label: "Test Data Set2",
-        data: [40, 20, 50, 80, 24, 35, 76, 34, 45, 76],
+        data: generateData(),
         borderColor: "#ed891d",
         borderWidth: 2,
         fill: false,
@@ -54,9 +70,9 @@ const Test = () => {
   };
 
   useEffect(() => {
-    var rectangleSet = false;
-    var canvasTest = document.getElementById("chart-Test");
-    var chartTest = new Chart(canvasTest, {
+    let rectangleSet = false;
+    const canvasTest = document.getElementById("chart-Test");
+    const chartTest = new Chart(canvasTest, {
       type: "line",
       data: chartData,
       maintainAspectRatio: false,
@@ -66,6 +82,9 @@ const Test = () => {
         title: {
           display: false,
           text: "Chart Title",
+        },
+        legend: {
+          display: false,
         },
         tooltips: {
           titleFontSize: 15,
@@ -114,7 +133,8 @@ const Test = () => {
         animation: {
           onComplete: function () {
             setEleWidth(
-              document.getElementById("emotionChartWrapper").clientWidth / 10
+              document.getElementById("emotionChartWrapper").clientWidth /
+                ITEMS_PER_SCREEN
             );
             if (!rectangleSet) {
               var scale = window.devicePixelRatio;
@@ -175,7 +195,7 @@ const Test = () => {
         },
       },
     });
-    addData(10, chartTest);
+    addData(MAX_COUNT - ITEMS_PER_SCREEN, chartTest);
     document.getElementById("emotionThumbnailWrapper").onscroll = (event) => {
       document.getElementById(
         "emotionChartWrapper"
@@ -183,10 +203,34 @@ const Test = () => {
         "emotionThumbnailWrapper"
       ).scrollLeft;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <React.Fragment>
       <label className="charts-title">Emotion level over time</label>
+      <div className="form-group">
+        <div className="customized-select-group">
+          <div className="age-select-manager">
+            <Select
+              title={"Age Segments"}
+              data={DEFAULT_FORM_DATA.ageSegments}
+            />
+          </div>
+          <div className="gender-select-manager">
+            <Select title={"Gender"} data={DEFAULT_FORM_DATA.gender} />
+          </div>
+          <div className="emotion-select-manager">
+            <Select title={"Emotion"} data={EMOTION_TYPE} />
+          </div>
+          <div className="legend-replica-wrapper">
+            <label>{`${DEFAULT_FORM_DATA.userCount} persons displayed`}</label>
+            <div>
+              <span></span>
+              <label>HAPPINESS</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="chartWrapper">
         <div className="chartAreaWrapper" id="emotionChartWrapper">
           <div className="chartAreaWrapper1" id="emotionChartAreaWrapper">

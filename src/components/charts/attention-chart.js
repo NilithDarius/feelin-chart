@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
 import Chart from "chart.js";
 import Thumbnails from "./thumbnails";
-import reactDom from "react-dom";
+import { Select } from "./select";
+import {
+  ITEMS_PER_SCREEN,
+  MAX_COUNT,
+  DEFAULT_FORM_DATA,
+} from "../../utils/constants";
+
 function AttentionChart() {
-  const [eleWidth, setEleWidth] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
+  const [eleWidth, setEleWidth] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const addData = (numData, chart) => {
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < numData; i++) {
       let rand1 = Math.random() * 100;
       let rand2 = Math.random() * 100;
       chart.data.datasets[0].data.push([rand1, rand1 + 2]);
@@ -15,54 +21,44 @@ function AttentionChart() {
       chart.data.labels.push(i * 5 + 20);
       var newwidth =
         document.getElementById("attentionChartAreaWrapper").offsetWidth +
-        document.getElementById("emotionChartWrapper").clientWidth / 10;
+        document.getElementById("emotionChartWrapper").clientWidth /
+          ITEMS_PER_SCREEN;
       document.getElementById(
         "attentionChartAreaWrapper"
       ).style.width = `${newwidth}px`;
     }
   };
+
   const generateLabel = () => {
     var label = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < ITEMS_PER_SCREEN; i++) {
       label[i] = i * 5;
     }
     return label;
   };
+
+  const generateData = () => {
+    const data = [];
+    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
+      let rand = Math.random() * 100;
+      data[i] = [rand-3, rand];
+    }
+    return data;
+  };
+
   const chartData = {
     labels: generateLabel(),
     datasets: [
       {
         label: "VALUE 1",
-        data: [
-          [10, 12],
-          [77, 79],
-          [50, 52],
-          [24, 26],
-          [59, 61],
-          [80, 82],
-          [45, 47],
-          [31, 33],
-          [26, 28],
-          [8, 10],
-        ],
+        data: generateData(),
         backgroundColor: "#9C4C8F",
         categoryPercentage: 1,
         pointRadius: 7,
       },
       {
         label: "VALUE 2",
-        data: [
-          [30, 32],
-          [23, 25],
-          [78, 80],
-          [90, 92],
-          [20, 22],
-          [14, 16],
-          [86, 88],
-          [36, 38],
-          [64, 66],
-          [22, 24],
-        ],
+        data: generateData(),
         backgroundColor: "#ed891d",
         categoryPercentage: 1,
         pointRadius: 7,
@@ -88,6 +84,9 @@ function AttentionChart() {
           titleFontSize: 15,
           titleMarginBottom: 10,
           bodyFontSize: 10,
+        },
+        legend: {
+          display: false,
         },
         scales: {
           yAxes: [
@@ -132,7 +131,8 @@ function AttentionChart() {
         animation: {
           onComplete: function () {
             setEleWidth(
-              document.getElementById("attentionChartWrapper").offsetWidth / 10
+              document.getElementById("attentionChartWrapper").offsetWidth /
+                ITEMS_PER_SCREEN
             );
             if (!rectangleSet) {
               var scale = window.devicePixelRatio;
@@ -193,7 +193,8 @@ function AttentionChart() {
         },
       },
     });
-    addData(10, chartTest);
+
+    addData(MAX_COUNT - ITEMS_PER_SCREEN, chartTest);
 
     document.getElementById("attentionThumbnailWrapper").onscroll = (event) => {
       document.getElementById(
@@ -202,10 +203,27 @@ function AttentionChart() {
         "attentionThumbnailWrapper"
       ).scrollLeft;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <React.Fragment>
       <label className="charts-title">Attention level on time</label>
+      <div className="form-group">
+        <div className="customized-select-group">
+          <div className="age-select-manager">
+            <Select title="Age Segments" data={DEFAULT_FORM_DATA.ageSegments} />
+          </div>
+          <div className="gender-select-manager">
+            <Select title="Gender" data={DEFAULT_FORM_DATA.gender} />
+          </div>
+          <div className="legend-replica-wrapper attention">
+            <div>
+              <span></span>
+              <label>HAPPINESS</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="chartWrapper">
         <div className="chartAreaWrapper" id="attentionChartWrapper">
           <div className="chartAreaWrapper2" id="attentionChartAreaWrapper">
@@ -214,7 +232,7 @@ function AttentionChart() {
         </div>
         <canvas id="axis-Chart" height="400" width="0"></canvas>
       </div>
-      <div style={{ overflow: "scroll" }} id="attentionThumbnailWrapper">
+      <div className="thumbnailGroup" id="attentionThumbnailWrapper">
         <Thumbnails
           index={selectedImage}
           eleWidth={eleWidth}

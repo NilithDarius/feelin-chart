@@ -1,6 +1,6 @@
 import React from "react"
-import "./styles.css"
 import Jupiler from './pages/Jupiler'
+import "./styles.css"
 
 function App() {
   return (
