@@ -17,7 +17,7 @@ export const emotionQuery = `query {
             data {
               all {
                 all {
-                  fear,
+                  fear, [0,10,0,1,0,0,0,0,]
                   anger,
                   sadness,
                   surprise,

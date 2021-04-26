@@ -7,32 +7,32 @@ import { AttentionChart,Test } from "../../components";
 function Jupiler() {
 
   // const fetchEmotion = useCallback(async () => {
-  //   // setIsLoading(true);
-  //   const data = await axios.post(process.env.REACT_APP_API_URL, {
-  //     query: loginQuery,
-  //   });
-  //   const { token } = data.data.data.login;
-  //   const emotionData = await axios.post(
-  //     process.env.REACT_APP_API_URL,
-  //     {
-  //       query: emotionQuery,
-  //     },
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   const trialEmotionData =
-  //     emotionData.data.data.clientProfile.orders.filter(
-  //       (order) => order.orderName === "Wave_test"
-  //     ).length > 0 &&
-  //     emotionData.data.data.clientProfile.orders.filter(
-  //       (order) => order.orderName === "Wave_test"
-  //     )[0];
-  //   setIsLoading(false);
-  //   setEmotionData(trialEmotionData);
+    // setIsLoading(true);
+    // const data = await axios.post(process.env.REACT_APP_API_URL, {
+    //   query: loginQuery,
+    // });
+    // const { token } = data.data.data.login;
+    // const emotionData = await axios.post(
+    //   process.env.REACT_APP_API_URL,
+    //   {
+    //     query: emotionQuery,
+    //   },
+    //   {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }
+    // );
+    // const trialEmotionData =
+    //   emotionData.data.data.clientProfile.orders.filter(
+    //     (order) => order.orderName === "Wave_test"
+    //   ).length > 0 &&
+    //   emotionData.data.data.clientProfile.orders.filter(
+    //     (order) => order.orderName === "Wave_test"
+    //   )[0];
+    // setIsLoading(false);
+    // setEmotionData(trialEmotionData);
   // }, []);
 
   // useEffect(() => {
