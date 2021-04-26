@@ -1,9 +1,8 @@
-export const attentionQuery = "";
 export const loginQuery = `mutation {
   login(email: "${process.env.REACT_APP_API_CREDENTIAL_USER}", password: "${process.env.REACT_APP_API_CREDENTIAL_PASS}") {
     token
   }
-}`
+}`;
 export const emotionQuery = `query {
   clientProfile {
     orders {
@@ -26,6 +25,34 @@ export const emotionQuery = `query {
                   happiness
                 }
               }
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+export const attentionQuery = `query {
+  clientProfile {
+    orders{
+      orderName 
+      analytics {
+        attention {
+          attention_score,
+          heatmap {
+            thumbnail
+          },
+          details {
+            data {
+              all {
+                all {
+                  distance
+                }
+              }
+            }
+            media {
+              media_preview,
+              media_time,
             }
           }
         }
