@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
-const Select = ({ title, data }) => {
-  console.log("this is data", data);
+const Select = ({ title, data, type, changeSelect }) => {
+  const chageData = (e) => {
+    changeSelect({type: type, value: e.target.value})
+  }
   return (
     <div className="custom-select">
       <label className="append-label">{title}</label>
-      <select>
+      <select onChange={chageData}>
         {data.map((item, idx) => (
-          <option value={item.label}>{item.label}</option>
+          <option key={idx} value={item.value}>{item.label}</option>
         ))}
       </select>
     </div>
