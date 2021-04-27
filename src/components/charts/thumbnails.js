@@ -24,6 +24,7 @@ const Thumbnails = ({ index, eleWidth, type }) => {
     >
       {generateArray().map((item, idx) => (
         <div
+          key={idx}
           className={classNames({ active: index === idx })}
           style={{
             width: idx === index ? eleWidth * 1.5 : eleWidth,

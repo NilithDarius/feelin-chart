@@ -8,85 +8,108 @@ import {
   DEFAULT_FORM_DATA,
 } from "../../utils/constants";
 
-function AttentionChart() {
+const AttentionChart = ({ type, kind, resources, colorList }) => {
   const [eleWidth, setEleWidth] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const addData = (numData, chart) => {
-    for (var i = 0; i < numData; i++) {
-      let rand1 = Math.random() * 100;
-      let rand2 = Math.random() * 100;
-      chart.data.datasets[0].data.push([rand1, rand1 + 2]);
-      chart.data.datasets[1].data.push([rand2, rand2 + 2]);
+    for (let i = 0; i < numData; i++) {
+      if (type === "bar") {
+        for (let j = 0; j < Object.keys(resources).length; j++) {
+          chart.data.datasets[j].data.push([
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN],
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN] + 2,
+          ]);
+        }
+      } else {
+        for (let j = 0; j < Object.keys(resources).length; j++) {
+          chart.data.datasets[j].data.push(
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN]
+          );
+        }
+      }
+
       chart.data.labels.push(i * 5 + 20);
-      var newwidth =
-        document.getElementById("attentionChartAreaWrapper").offsetWidth +
-        document.getElementById("emotionChartWrapper").clientWidth /
+      const newwidth =
+        document.getElementById(`${kind}ChartAreaWrapper`).offsetWidth +
+        document.getElementById(`${kind}ChartWrapper`).clientWidth /
           ITEMS_PER_SCREEN;
       document.getElementById(
-        "attentionChartAreaWrapper"
+        `${kind}ChartAreaWrapper`
       ).style.width = `${newwidth}px`;
     }
   };
 
   const generateLabel = () => {
-    var label = [];
-    for (var i = 0; i < ITEMS_PER_SCREEN; i++) {
+    const label = [];
+    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
       label[i] = i * 5;
     }
     return label;
   };
 
-  const generateData = () => {
-    const data = [];
-    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
-      let rand = Math.random() * 100;
-      data[i] = [rand-3, rand];
+  const generateData = (count) => {
+    const data = {
+      labels: [],
+      datasets: [],
+    };
+    const indexArray = Object.keys(resources);
+    data.labels = generateLabel();
+    if (type === "bar") {
+      for (let i = 0; i < count; i++) {
+        let storeIndividualData = [];
+        for (let j = 0; j < ITEMS_PER_SCREEN; j++) {
+          storeIndividualData[j] = [
+            resources[indexArray[i]][j],
+            resources[indexArray[i]][j] + 2,
+          ];
+        }
+        data.datasets.push({
+          label: indexArray[i],
+          data: storeIndividualData,
+          backgroundColor: colorList[i],
+          categoryPercentage: 1,
+          pointRadius: 7,
+        });
+      }
+    } else {
+      for (let i = 0; i < count; i++) {
+        data.datasets.push({
+          label: indexArray[i],
+          data: resources[indexArray[i]].slice(0, ITEMS_PER_SCREEN),
+          backgroundColor: colorList[i],
+          categoryPercentage: 1,
+          borderColor: colorList[i],
+          borderWidth: 2,
+          fill: false,
+          pointBackgroundColor: colorList[i],
+          pointRadius: 7,
+          pointHoverRadius: 7,
+        });
+      }
     }
+
     return data;
   };
 
-  const chartData = {
-    labels: generateLabel(),
-    datasets: [
-      {
-        label: "VALUE 1",
-        data: generateData(),
-        backgroundColor: "#9C4C8F",
-        categoryPercentage: 1,
-        pointRadius: 7,
-      },
-      {
-        label: "VALUE 2",
-        data: generateData(),
-        backgroundColor: "#ed891d",
-        categoryPercentage: 1,
-        pointRadius: 7,
-      },
-    ],
-  };
-
   useEffect(() => {
-    var rectangleSet = false;
-    var canvasTest = document.getElementById("attention-Chart");
-    var chartTest = new Chart(canvasTest, {
-      type: "bar",
-      data: chartData,
-      maintainAspectRatio: false,
-      responsive: true,
+    let rectangleSet = false;
+    const canvasTest = document.getElementById(`${kind}-Chart`);
+    const chartTest = new Chart(canvasTest, {
+      type: type,
+      data: generateData(Object.keys(resources).length),
       options: {
         maintainAspectRatio: false,
         title: {
           display: false,
-          text: "Chart Title",
+        },
+        legend: {
+          display: false,
         },
         tooltips: {
           titleFontSize: 15,
           titleMarginBottom: 10,
           bodyFontSize: 10,
-        },
-        legend: {
-          display: false,
         },
         scales: {
           yAxes: [
@@ -97,6 +120,7 @@ function AttentionChart() {
                 color: "#A9B0C3",
                 borderDash: [6, 4],
                 borderColor: "#A9B0C3",
+                lineWidth: 2,
               },
               ticks: {
                 suggestedMin: 0,
@@ -105,7 +129,7 @@ function AttentionChart() {
                   enabled: false,
                 },
                 stepSize: 20,
-                callback: function (value, index, values) {
+                callback: function (value) {
                   return value !== 0 ? value + "%" : "";
                 },
               },
@@ -115,12 +139,12 @@ function AttentionChart() {
           xAxes: [
             {
               gridLines: {
-                display: true,
+                display: type === "bar" ? true : false,
                 color: "#A9B0C3",
                 lineWidth: 2,
               },
               ticks: {
-                callback: function (value, index, values) {
+                callback: function (value) {
                   return value !== 0 ? value + "''" : value;
                 },
               },
@@ -131,7 +155,7 @@ function AttentionChart() {
         animation: {
           onComplete: function () {
             setEleWidth(
-              document.getElementById("attentionChartWrapper").offsetWidth /
+              document.getElementById(`${kind}ChartWrapper`).offsetWidth /
                 ITEMS_PER_SCREEN
             );
             if (!rectangleSet) {
@@ -196,11 +220,11 @@ function AttentionChart() {
 
     addData(MAX_COUNT - ITEMS_PER_SCREEN, chartTest);
 
-    document.getElementById("attentionThumbnailWrapper").onscroll = (event) => {
+    document.getElementById(`${kind}ThumbnailWrapper`).onscroll = (event) => {
       document.getElementById(
-        "attentionChartWrapper"
+        `${kind}ChartWrapper`
       ).scrollLeft = document.getElementById(
-        "attentionThumbnailWrapper"
+        `${kind}ThumbnailWrapper`
       ).scrollLeft;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -225,21 +249,17 @@ function AttentionChart() {
         </div>
       </div>
       <div className="chartWrapper">
-        <div className="chartAreaWrapper" id="attentionChartWrapper">
-          <div className="chartAreaWrapper2" id="attentionChartAreaWrapper">
-            <canvas id="attention-Chart" height="400" width="1200"></canvas>
+        <div className="chartAreaWrapper" id={`${kind}ChartWrapper`}>
+          <div className="chartAreaWrapper2" id={`${kind}ChartAreaWrapper`}>
+            <canvas id={`${kind}-Chart`} height="400" width="1200"></canvas>
           </div>
         </div>
         <canvas id="axis-Chart" height="400" width="0"></canvas>
       </div>
-      <div className="thumbnailGroup" id="attentionThumbnailWrapper">
-        <Thumbnails
-          index={selectedImage}
-          eleWidth={eleWidth}
-          type="attention"
-        />
+      <div className="thumbnailGroup" id={`${kind}ThumbnailWrapper`}>
+        <Thumbnails index={selectedImage} eleWidth={eleWidth} type={kind} />
       </div>
     </React.Fragment>
   );
-}
+};
 export default AttentionChart;

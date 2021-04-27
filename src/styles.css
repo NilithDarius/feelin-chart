@@ -174,24 +174,28 @@
   font-family: system-ui;
   display: flex;
   align-items: center;
-  width: 41%;
+  width: 43%;
+  margin: 0px;
   justify-content: space-between;
 }
 .customized-attention-lenged {
   width: 59%;
 }
-
-.customized-select-group > .legend-replica-wrapper > div {
+.customized-select-group .span-manager {
+  display: flex;
+}
+.customized-select-group .span-manager > div {
   display: flex;
   align-items: center;
+  margin: 0px 5px;
 }
-.customized-select-group > .legend-replica-wrapper > div > label {
+.customized-select-group .span-manager > div > label {
   font-weight: normal;
   color: #545b77;
   font-size: 14px;
   position: relative;
 }
-.customized-select-group > .legend-replica-wrapper > div > span {
+.customized-select-group .span-manager > div > span {
   border-radius: 50%;
   width: 15px;
   height: 15px;
@@ -201,5 +205,4 @@
 }
 .legend-replica-wrapper.attention {
   width: 59%;
-  
 }

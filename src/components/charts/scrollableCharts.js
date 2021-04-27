@@ -1,32 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "chart.js";
-import Thumbnails from "../charts/thumbnails";
-import { Select } from "../charts/select";
-import {
-  MAX_COUNT,
-  ITEMS_PER_SCREEN,
-  DEFAULT_FORM_DATA,
-  EMOTION_TYPE,
-} from "../../utils/constants";
+import Thumbnails from "./thumbnails";
+import { ITEMS_PER_SCREEN, MAX_COUNT } from "../../utils/constants";
 
-const Test = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+const ScrollableChart = ({ type, kind, resources, colorList }) => {
   const [eleWidth, setEleWidth] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const addData = (numData, chart) => {
     for (let i = 0; i < numData; i++) {
-      chart.data.datasets[0].data.push(Math.random() * 100);
-      chart.data.datasets[1].data.push(Math.random() * 100);
+      if (type === "bar") {
+        for (let j = 0; j < Object.keys(resources).length; j++) {
+          chart.data.datasets[j].data.push([
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN],
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN] + 2,
+          ]);
+        }
+      } else {
+        for (let j = 0; j < Object.keys(resources).length; j++) {
+          chart.data.datasets[j].data.push(
+            resources[Object.keys(resources)[j]][i + ITEMS_PER_SCREEN]
+          );
+        }
+      }
+
       chart.data.labels.push(i * 5 + 20);
       const newwidth =
-        document.getElementById("emotionChartAreaWrapper").offsetWidth +
-        document.getElementById("emotionChartWrapper").clientWidth /
+        document.getElementById(`${kind}ChartAreaWrapper`).offsetWidth +
+        document.getElementById(`${kind}ChartWrapper`).clientWidth /
           ITEMS_PER_SCREEN;
       document.getElementById(
-        "emotionChartAreaWrapper"
+        `${kind}ChartAreaWrapper`
       ).style.width = `${newwidth}px`;
     }
   };
+
   const generateLabel = () => {
     const label = [];
     for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
@@ -34,47 +42,57 @@ const Test = () => {
     }
     return label;
   };
-  const generateData = () => {
-    const data = [];
-    for (let i = 0; i < ITEMS_PER_SCREEN; i++) {
-      data[i] = Math.random() * 100;
+
+  const generateData = (count) => {
+    const data = {
+      labels: [],
+      datasets: [],
+    };
+    const indexArray = Object.keys(resources);
+    data.labels = generateLabel();
+    if (type === "bar") {
+      for (let i = 0; i < count; i++) {
+        let storeIndividualData = [];
+        for (let j = 0; j < ITEMS_PER_SCREEN; j++) {
+          storeIndividualData[j] = [
+            resources[indexArray[i]][j],
+            resources[indexArray[i]][j] + 2,
+          ];
+        }
+        data.datasets.push({
+          label: indexArray[i],
+          data: storeIndividualData,
+          backgroundColor: colorList[i],
+          categoryPercentage: 1,
+          pointRadius: 7,
+        });
+      }
+    } else {
+      for (let i = 0; i < count; i++) {
+        data.datasets.push({
+          label: indexArray[i],
+          data: resources[indexArray[i]].slice(0, ITEMS_PER_SCREEN),
+          backgroundColor: colorList[i],
+          categoryPercentage: 1,
+          borderColor: colorList[i],
+          borderWidth: 2,
+          fill: false,
+          pointBackgroundColor: colorList[i],
+          pointRadius: 7,
+          pointHoverRadius: 7,
+        });
+      }
     }
+
     return data;
-  };
-  const chartData = {
-    labels: generateLabel(),
-    datasets: [
-      {
-        label: "Test Data Set1",
-        data: generateData(),
-        borderColor: "#9C4C8F",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "#9C4C8F",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "#9C4C8F",
-      },
-      {
-        label: "Test Data Set2",
-        data: generateData(),
-        borderColor: "#ed891d",
-        borderWidth: 2,
-        fill: false,
-        pointBackgroundColor: "#ed891d",
-        pointRadius: 7,
-        pointHoverRadius: 7,
-        backgroundColor: "#ed891d",
-      },
-    ],
   };
 
   useEffect(() => {
     let rectangleSet = false;
-    const canvasTest = document.getElementById("chart-Test");
+    const canvasTest = document.getElementById(`${kind}-Chart`);
     const chartTest = new Chart(canvasTest, {
-      type: "line",
-      data: chartData,
+      type: type,
+      data: generateData(Object.keys(resources).length),
       options: {
         maintainAspectRatio: false,
         title: {
@@ -93,10 +111,11 @@ const Test = () => {
             {
               gridLines: {
                 display: true,
-                borderDash: [6, 4],
-                color: "#A9B0C3",
-                lineWidth: 2,
                 zeroLineColor: "#A9B0C3",
+                color: "#A9B0C3",
+                borderDash: [6, 4],
+                borderColor: "#A9B0C3",
+                lineWidth: 2,
               },
               ticks: {
                 suggestedMin: 0,
@@ -105,32 +124,33 @@ const Test = () => {
                   enabled: false,
                 },
                 stepSize: 20,
-                callback: function (value, index, values) {
+                callback: function (value) {
                   return value !== 0 ? value + "%" : "";
                 },
               },
+              stacked: false,
             },
           ],
           xAxes: [
             {
               gridLines: {
-                display: false,
+                display: type === "bar" ? true : false,
                 color: "#A9B0C3",
                 lineWidth: 2,
-                zeroLineColor: "#A9B0C3",
               },
               ticks: {
-                callback: function (value, index, values) {
-                  return value !== 0 ? value + "''" : 0;
+                callback: function (value) {
+                  return value !== 0 ? value + "''" : value;
                 },
               },
+              stacked: true,
             },
           ],
         },
         animation: {
           onComplete: function () {
             setEleWidth(
-              document.getElementById("emotionChartWrapper").clientWidth /
+              document.getElementById(`${kind}ChartWrapper`).offsetWidth /
                 ITEMS_PER_SCREEN
             );
             if (!rectangleSet) {
@@ -144,7 +164,7 @@ const Test = () => {
                 10;
 
               var targetCtx = document
-                .getElementById("axis-Test")
+                .getElementById(`${kind}-Chart`)
                 .getContext("2d");
 
               targetCtx.scale(scale, scale);
@@ -192,37 +212,32 @@ const Test = () => {
         },
       },
     });
+
     addData(MAX_COUNT - ITEMS_PER_SCREEN, chartTest);
 
-    document.getElementById("emotionThumbnailWrapper").onscroll = (event) => {
+    document.getElementById(`${kind}ThumbnailWrapper`).onscroll = (event) => {
       document.getElementById(
-        "emotionChartWrapper"
+        `${kind}ChartWrapper`
       ).scrollLeft = document.getElementById(
-        "emotionThumbnailWrapper"
+        `${kind}ThumbnailWrapper`
       ).scrollLeft;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <React.Fragment>
-      <label className="charts-title">Emotion level over time</label>
-      
       <div className="chartWrapper">
-        <div className="chartAreaWrapper" id="emotionChartWrapper">
-          <div className="chartAreaWrapper1" id="emotionChartAreaWrapper">
-            <canvas id="chart-Test" height="400" width="1200"></canvas>
+        <div className="chartAreaWrapper" id={`${kind}ChartWrapper`}>
+          <div className="chartAreaWrapper2" id={`${kind}ChartAreaWrapper`}>
+            <canvas id={`${kind}-Chart`} height="400" width="1200"></canvas>
           </div>
         </div>
-        <canvas id="axis-Test" width="0"></canvas>
+        <canvas id={`${kind}-Chart`} height="400" width="0"></canvas>
       </div>
-      <div className="thumbnailGroup" id="emotionThumbnailWrapper">
-        <Thumbnails
-          index={selectedImage}
-          eleWidth={eleWidth}
-          type={"emotion"}
-        />
+      <div className="thumbnailGroup" id={`${kind}ThumbnailWrapper`}>
+        <Thumbnails index={selectedImage} eleWidth={eleWidth} type={kind} />
       </div>
     </React.Fragment>
   );
 };
-export default Test;
+export default ScrollableChart;
